@@ -3,13 +3,11 @@ package marwas.libraryapplication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import marwas.libraryapplication.aop.ExecutionTimeLogging;
 import marwas.libraryapplication.book.Book;
-import marwas.libraryapplication.writer.CsvFileWriterImpl;
+import marwas.libraryapplication.reader.DbReaderImpl;
+import marwas.libraryapplication.reader.LibraryReader;
+import marwas.libraryapplication.repository.BookRepository;
 import marwas.libraryapplication.writer.LibraryWriter;
 
 public class MenuServiceImpl implements MenuService {
@@ -18,11 +16,16 @@ public class MenuServiceImpl implements MenuService {
 	private int userChoice;
 
 	@Autowired
-	private LibraryWriter csvLibraryWriter;
-
+	private LibraryWriter csvWriter;
+	
+	@Autowired
+	private BookService bookService;
+	
 	@Override
 	public void showMenu() {
 		while (userChoice != 5) {
+			books.addAll(bookService.list());
+			
 			System.out.println("Please select from menu:");
 			System.out.println("1.Add book");
 			System.out.println("2.Remove book");
@@ -78,7 +81,7 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public void saveBooksList() {
 		System.out.println("Saving books");
-		csvLibraryWriter.saveList(books);
+		csvWriter.saveList(books);
 		System.out.println("List of books saved to CSV file.");
 	}
 

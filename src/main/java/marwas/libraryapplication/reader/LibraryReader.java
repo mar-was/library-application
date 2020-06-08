@@ -1,5 +1,9 @@
 package marwas.libraryapplication.reader;
 
+import java.util.List;
+
+import marwas.libraryapplication.book.Book;
+
 public interface LibraryReader {
-	public void readData();
+	public List<Book> readData();
 }
